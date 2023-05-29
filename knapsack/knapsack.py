@@ -206,7 +206,7 @@ if __name__ == '__main__':
                 cost_history.append(knapsack.value)
 
                 if optimiser == "sahc":
-                    knapsack, item_list = steepest_assent_hill_climb(knapsack, item_list, iter=1000, cutoff=1000)
+                    knapsack, item_list = steepest_assent_hill_climb(knapsack, item_list, iter=1000, cutoff=250)
                 elif optimiser == "sa":
                     knapsack, item_list = simulated_annealing(knapsack, item_list, tmax=1000, tmin=0.001, cooling_rate=0.995)
                 else:
@@ -219,7 +219,7 @@ if __name__ == '__main__':
                 logging.info(f"Total time elapsed: {elapsed_time * 1000} (ms)")
                 plt.plot(cost_history, label=f'Seed {seed}')
                 logging.info(f"Summary: ")
-                print(f"{seed}\t{init}\t{optimiser}\t{elapsed_time}\t{cost_history[0]}\t{knapsack.value}")
+                print(f"{seed}\t{init}\t{optimiser}\t{elapsed_time}\t{len(cost_history)}\t{cost_history[0]}\t{knapsack.value}")
             plt.xlabel('Iterations')
             plt.ylabel('Knapsack Value')
             plt.legend()
