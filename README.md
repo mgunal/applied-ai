@@ -1,2 +1,2 @@
-# applied-ml
-Source codes for applied-ml course
+# applied-ai
+Source codes for Applied Artificial Intelligence course
