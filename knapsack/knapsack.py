@@ -129,7 +129,7 @@ def simulated_annealing(sack: Knapsack, items: list, tmax, tmin, cooling_rate):
     best_items = list(items)
     while t >= tmin:
         iteration = 0
-        while iteration < 10:
+        while iteration < 20:
             # Generate new solution
             new_solution = copy.copy(sack)
             new_items = list(items)
