@@ -26,24 +26,32 @@ X_train, X_validation, Y_train, Y_validation = \
 models = []
 # Linear Regression model
 linear_model = LinearRegression()
-models.append(('Linear Regression', linear_model))
+#models.append(('Linear Regression', linear_model))
 
 # Artificial Neural Networks (Multi-layer Perceptron) model
 ann_model = MLPRegressor(hidden_layer_sizes=(100), activation='relu', solver='adam', random_state=1,
                          learning_rate='adaptive')
-models.append(('Artificial Neural Network', ann_model))
+#models.append(('Artificial Neural Network', ann_model))
 
 # Gradient Boosting
-gb_model = GradientBoostingRegressor()
+gb_model = GradientBoostingRegressor(
+        learning_rate=0.1,
+        n_estimators=52,
+        max_depth=2,
+        min_samples_split=2,
+        min_samples_leaf=1,
+        max_features=None,
+        random_state=0
+        )
 models.append(('Gradient Boosting', gb_model))
 
 # Support Vector Machine (SVR) model
 svm_model = SVR()
-models.append(('Support Vector Machine', svm_model))
+#models.append(('Support Vector Machine', svm_model))
 
 # Decision Trees
 dt_model = DecisionTreeRegressor()
-models.append(('Decision Tree', dt_model))
+#models.append(('Decision Tree', dt_model))
 
 for model_name, model in models:
     print(f"{model_name} Model")
