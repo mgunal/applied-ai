@@ -1,6 +1,8 @@
 import pandas as pd
 
 # Load Datasets
+from sklearn.model_selection import train_test_split
+
 paths = [("max_temp", "./datasets/UK Met Office Public Data - Maximum Temperature Series.txt"),
          ("mean_temp", "./datasets/UK Met Office Public Data - Mean Temperature Series.txt"),
          ("min_temp", "./datasets/UK Met Office Public Data - Minimum Temparature Series.txt"),
@@ -31,10 +33,23 @@ for name, path in paths:
 dataset = pd.concat(datasets, axis=1, join='inner')
 # Add previous month's rainfall as a new feature
 dataset['prev_month'] = dataset['rainfall'].shift(1)
+# Add previous year's rainfall as a new feature
 dataset['prev_year'] = dataset['rainfall'].shift(12)
+# # Add the month of the year
+# dataset['month'] = dataset.index.month
 
 # Clear NaN Values
 df = dataset.dropna(axis=0)
 
 print(df.describe())
 df.to_csv("dataframe.csv")
+
+# Create Train/Test Split here to reduce repetitive code
+Y = df['rainfall']
+X = df.drop(['rainfall'], axis=1)
+print(f'Features: \n {X.columns}')
+print()
+
+# Separate Train and Test Sets
+X_train, X_validation, Y_train, Y_validation = \
+    train_test_split(X, Y, test_size=0.30, random_state=0, shuffle=False)
