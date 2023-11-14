@@ -2,6 +2,7 @@ import pandas as pd
 
 # Load Datasets
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
 paths = [("max_temp", "./datasets/UK Met Office Public Data - Maximum Temperature Series.txt"),
          ("mean_temp", "./datasets/UK Met Office Public Data - Mean Temperature Series.txt"),
@@ -30,16 +31,35 @@ for name, path in paths:
     data.head()
     datasets.append(data)
 
-dataset = pd.concat(datasets, axis=1, join='inner')
-# Add previous month's rainfall as a new feature
-dataset['prev_month'] = dataset['rainfall'].shift(1)
-# Add previous year's rainfall as a new feature
-dataset['prev_year'] = dataset['rainfall'].shift(12)
-# # Add the month of the year
-# dataset['month'] = dataset.index.month
+raw_data = pd.concat(datasets, axis=1, join='inner')
 
 # Clear NaN Values
-df = dataset.dropna(axis=0)
+# Add previous month's rainfall as a new feature
+df = raw_data.copy()
+df['prev_month'] = df['rainfall'].shift(1)
+# Add previous year's rainfall as a new feature
+df['prev_year'] = df['rainfall'].shift(12)
+# # Add the month of the year
+# Extract the month
+df['month'] = df.index.month
+# Calculate average rainfall for each month
+average_rainfall = df.groupby('month')['rainfall'].mean()
+df['average_rainfall'] = df['month'].map(average_rainfall)
+
+
+# Function to transform the month to the 0-1 range
+# April as 0 and November as 1
+def transform_month(month):
+    # Normalize to 0-1 range with April as 0 and November as 1
+    return (month - 4) / 7 if month >= 4 else (month + 8) / 7
+
+# Apply the transformation
+df['month'] = df['month'].apply(transform_month)
+
+
+# dataset['month'] = dataset.index.month
+df = df.dropna(axis=0)
+
 
 print(df.describe())
 df.to_csv("dataframe.csv")
@@ -49,6 +69,11 @@ Y = df['rainfall']
 X = df.drop(['rainfall'], axis=1)
 print(f'Features: \n {X.columns}')
 print()
+
+# Initialize the MinMaxScaler
+scaler = MinMaxScaler()
+# Fit the scaler to the features and transform them
+#X_scaled = scaler.fit_transform(X)
 
 # Separate Train and Test Sets
 X_train, X_validation, Y_train, Y_validation = \

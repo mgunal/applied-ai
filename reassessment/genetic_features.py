@@ -10,7 +10,7 @@ from dataset import X_train, Y_train, X_validation, Y_validation
 
 # Define the size of the population and number of generations for the GA
 population_size = 10
-num_generations = 5
+num_generations = 10
 num_features = X_train.shape[1]
 
 # Initialize a population with random feature selections
@@ -28,8 +28,8 @@ def evaluate_population(population, X_train, y_train):
         else:
             X_train_subset = X_train[selected_features]
             X_validation_subset = X_validation[selected_features]
-            model = LinearRegression()
-            #model = MLPRegressor(hidden_layer_sizes=(20, 40, 40, 20), activation='relu', solver='adam', random_state=1, learning_rate='adaptive')
+            #model = LinearRegression()
+            model = MLPRegressor(hidden_layer_sizes=(20, 40, 40, 20), activation='relu', solver='adam', random_state=1, learning_rate='adaptive')
             model.fit(X_train_subset, Y_train)
             prediction = model.predict(X_validation_subset)
             mse = mean_squared_error(Y_validation, prediction)
@@ -43,6 +43,7 @@ best_score = np.inf
 
 for generation in range(num_generations):
     # Evaluate the current population
+    print(f"Generation {generation}, best score: {best_score}")
     scores = evaluate_population(population, X_train, Y_train)
     best_idx = np.argmin(scores)
     if scores[best_idx] < best_score:

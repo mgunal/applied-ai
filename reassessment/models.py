@@ -6,19 +6,10 @@ from sklearn.model_selection import train_test_split
 # Import prepared data from datasets
 from sklearn.neural_network import MLPRegressor
 
-from dataset import df
+from dataset import df, X_train, X_validation, Y_train, Y_validation
+
 print(df.head())
 print()
-
-
-Y = df['rainfall']
-X = df.drop(['rainfall'], axis=1)
-print(f'Features: {X.columns}')
-print()
-
-# Separate Train and Test Sets
-X_train, X_validation, Y_train, Y_validation = \
-    train_test_split(X, Y, test_size=0.30, random_state=0, shuffle=False)
 
 models = []
 # Linear Regression model
