@@ -17,7 +17,16 @@ linear_model = LinearRegression()
 models.append(('Linear Regression', linear_model))
 
 # Artificial Neural Networks (Multi-layer Perceptron) model
-ann_model = MLPRegressor(hidden_layer_sizes=(20, 40, 40, 20), activation='relu', solver='adam', random_state=1, learning_rate='adaptive')
+# Define the parameters as a dictionary
+ann_params = {
+    'hidden_layer_sizes': (16, 8, 16, 8, 4), #(32, 16, 16, 8, 8)
+    'activation': 'relu',
+    'solver': 'adam',
+    'random_state': 1,
+    'learning_rate': 'adaptive',
+    'shuffle': False
+}
+ann_model = MLPRegressor(**ann_params)
 models.append(('Artificial Neural Network', ann_model))
 
 # Gradient Boosting
@@ -25,6 +34,7 @@ gb_model = GradientBoostingRegressor()
 models.append(('Gradient Boosting', gb_model))
 
 if __name__ == '__main__':
+    print(f"Features:{X_train.columns.to_list()}")
     # Run Models with All features
     for model_name, model in models:
         print(f"{model_name} Model")

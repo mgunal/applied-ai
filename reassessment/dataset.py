@@ -45,16 +45,19 @@ df['month'] = df.index.month
 # Calculate average rainfall for each month
 average_rainfall = df.groupby('month')['rainfall'].mean()
 df['average_rainfall'] = df['month'].map(average_rainfall)
-
+# Calculate median rainfall for each month
+median_rainfall = df.groupby('month')['rainfall'].median()
+df['median_rainfall'] = df['month'].map(median_rainfall)
 
 # Function to transform the month to the 0-1 range
 # April as 0 and November as 1
-def transform_month(month):
-    # Normalize to 0-1 range with April as 0 and November as 1
-    return (month - 4) / 7 if month >= 4 else (month + 8) / 7
-
-# Apply the transformation
-df['month'] = df['month'].apply(transform_month)
+# def transform_month(month):
+#     # Normalize to 0-1 range with April as 0 and November as 1
+#     return (month - 4) / 7 if month >= 4 else (month + 8) / 7
+#
+# # Apply the transformation
+# df['month'] = df['month'].apply(transform_month)
+# df = df.drop(['month'], axis=1)
 
 
 # dataset['month'] = dataset.index.month
